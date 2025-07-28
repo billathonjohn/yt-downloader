@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Video Downloader</title>
+</head>
+<body>
+  <h1>YouTube Video Downloader</h1>
+  <input type="text" id="urlInput" placeholder="Paste YouTube video URL here" size="50">
+  <button id="downloadBtn">Download</button>
+
+  <script>
+    const btn = document.getElementById('downloadBtn');
+    btn.addEventListener('click', async () => {
+      const url = document.getElementById('urlInput').value;
+      if (!url) return alert('Please enter a URL');
+
+      const response = await fetch('http://localhost:3000/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+
+      if (!response.ok) {
+        alert('Download failed');
+        return;
+      }
+
+      const blob = await response.blob();
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'video.mp4';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+  </script>
+</body>
+</html>
