@@ -14,8 +14,9 @@ app.post('/download', (req, res) => {
 
   const outputPath = 'video.mp4';
 
-  // Use Linux yt-dlp (no .exe)
-  execFile('yt-dlp', ['-f', 'mp4', '-o', outputPath, videoUrl], (error) => {
+  execFile('yt-dlp', ['-f', 'mp4', '-o', outputPath, videoUrl], (error, stdout, stderr) => {
+    console.log('yt-dlp stdout:', stdout);
+    console.error('yt-dlp stderr:', stderr);
     if (error) {
       console.error('Download error:', error);
       return res.status(500).send('Failed to download video');
@@ -33,6 +34,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Listen on port from environment variable (Koyeb sets this), fallback to 3000 locally
+// Listen on port from environment variable or default 3000
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
