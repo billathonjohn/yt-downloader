@@ -14,7 +14,8 @@ app.post('/download', (req, res) => {
 
   const outputPath = 'video.mp4';
 
-  execFile('./yt-dlp.exe', ['-f', 'mp4', '-o', outputPath, videoUrl], (error) => {
+  // Run yt-dlp without .exe and no relative path
+  execFile('yt-dlp', ['-f', 'mp4', '-o', outputPath, videoUrl], (error) => {
     if (error) {
       console.error('Download error:', error);
       return res.status(500).send('Failed to download video');
@@ -27,10 +28,9 @@ app.post('/download', (req, res) => {
   });
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
-const path = require('path');
-
 // Serve index.html for the root route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
