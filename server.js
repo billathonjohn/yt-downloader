@@ -14,12 +14,8 @@ app.post('/download', (req, res) => {
 
   const outputPath = 'video.mp4';
 
-<<<<<<< HEAD
-  // Run yt-dlp without .exe and no relative path
+  // Use Linux yt-dlp (no .exe)
   execFile('yt-dlp', ['-f', 'mp4', '-o', outputPath, videoUrl], (error) => {
-=======
-  execFile('./yt-dlp.exe', ['-f', 'mp4', '-o', outputPath, videoUrl], (error) => {
->>>>>>> a154094 (Add lockfile and initial files)
     if (error) {
       console.error('Download error:', error);
       return res.status(500).send('Failed to download video');
@@ -32,18 +28,11 @@ app.post('/download', (req, res) => {
   });
 });
 
-<<<<<<< HEAD
-=======
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
-const path = require('path');
-
->>>>>>> a154094 (Add lockfile and initial files)
 // Serve index.html for the root route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-<<<<<<< HEAD
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
-=======
->>>>>>> a154094 (Add lockfile and initial files)
+// Listen on port from environment variable (Koyeb sets this), fallback to 3000 locally
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

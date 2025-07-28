@@ -1,6 +1,6 @@
 FROM node:18
 
-# Install yt-dlp
+# Install yt-dlp dependencies
 RUN apt-get update && \
     apt-get install -y python3-pip ffmpeg && \
     pip install yt-dlp
@@ -8,13 +8,16 @@ RUN apt-get update && \
 # Set working directory
 WORKDIR /app
 
-# Copy files
-COPY . .
+# Copy package files first for better cache
+COPY package*.json ./
 
 # Install Node.js dependencies
 RUN npm install
 
-# Expose port
+# Copy rest of the app files
+COPY . .
+
+# Expose port 3000
 EXPOSE 3000
 
 # Start the server
